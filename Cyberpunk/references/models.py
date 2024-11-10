@@ -9,6 +9,8 @@ class PriceCategory(models.Model):
 
     class Meta:
         db_table = 'price_category'
+        verbose_name = "PriceCategory"
+        verbose_name_plural = "PriceCategories"
 
 
 class Source(models.Model):
@@ -21,6 +23,8 @@ class Source(models.Model):
     class Meta:
         db_table = 'source'
         unique_together = (('name', 'code'),)
+        verbose_name = "Source"
+        verbose_name_plural = "Sources"
 
 
 class ItemType(models.Model):
@@ -31,6 +35,8 @@ class ItemType(models.Model):
 
     class Meta:
         db_table = 'item_type'
+        verbose_name = "ItemType"
+        verbose_name_plural = "ItemTypes"
 
 
 class KeyWords(models.Model):
@@ -42,6 +48,8 @@ class KeyWords(models.Model):
 
     class Meta:
         db_table = 'key_words'
+        verbose_name = "KeyWords"
+        verbose_name_plural = "KeyWords"
 
 
 class Modification(models.Model):
@@ -52,6 +60,8 @@ class Modification(models.Model):
 
     class Meta:
         db_table = 'modification'
+        verbose_name = "Modification"
+        verbose_name_plural = "Modifications"
 
 
 class TypeAmmo(models.Model):
@@ -61,6 +71,8 @@ class TypeAmmo(models.Model):
 
     class Meta:
         db_table = 'type_ammo'
+        verbose_name = "TypeAmmo"
+        verbose_name_plural = "TypesAmmo"
 
 
 class KindAmmo(models.Model):
@@ -72,6 +84,8 @@ class KindAmmo(models.Model):
 
     class Meta:
         db_table = 'kind_ammo'
+        verbose_name = "KindAmmo"
+        verbose_name_plural = "KindsAmmo"
 
 
 class TypeKindAmmo(models.Model):
@@ -80,6 +94,8 @@ class TypeKindAmmo(models.Model):
 
     class Meta:
         db_table = 'type_kind_ammo'
+        verbose_name = "TypeKindAmmo"
+        verbose_name_plural = "TypesKindsAmmo"
 
 
 class Weapon(models.Model):
@@ -108,6 +124,8 @@ class Weapon(models.Model):
 
     class Meta:
         db_table = 'weapon'
+        verbose_name = "Weapon"
+        verbose_name_plural = "Weapons"
 
 
 class WeaponKeyWords(models.Model):
@@ -116,6 +134,8 @@ class WeaponKeyWords(models.Model):
 
     class Meta:
         db_table = 'weapon_key_words'
+        verbose_name = "WeaponKeyWords"
+        verbose_name_plural = "WeaponsKeyWords"
 
 
 class WeaponAmmo(models.Model):
@@ -124,3 +144,5 @@ class WeaponAmmo(models.Model):
 
     class Meta:
         db_table = 'weapon_ammo'
+        verbose_name = "WeaponAmmo"
+        verbose_name_plural = "WeaponAmmo"

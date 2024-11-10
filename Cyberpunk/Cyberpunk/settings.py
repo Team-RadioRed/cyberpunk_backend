@@ -87,6 +87,14 @@ DATABASES = {
             'charset': 'utf8mb4',
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
+},
+    'cyberpunk_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'cyberpunk_db',
+        'USER': 'admin',
+        'PASSWORD': 'RdnoR_7Tz2',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 
