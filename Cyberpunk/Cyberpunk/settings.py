@@ -31,14 +31,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'main',
-    'references',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'main',
+    'references',
+
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -77,26 +80,18 @@ WSGI_APPLICATION = 'Cyberpunk.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cyberpunk_db',  # Название вашей базы данных
-        'USER': 'admin',     # Имя пользователя MySQL
+        'USER': 'postgres',     # Имя пользователя MySQL
         'PASSWORD': 'RdnoR_7Tz2',   # Пароль пользователя MySQL
-        'HOST': 'localhost',           # Сервер базы данных (обычно localhost)
-        'PORT': '3306',                # Порт MySQL (по умолчанию 3306)
+        'HOST': 'localhost',           # Сервер базы данных (обычно localhost или же айпи сервера сюда вписать)
+        'PORT': '5432',                # Порт Postgres (по умолчанию 5432)
         'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
-},
-    'cyberpunk_db': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cyberpunk_db',
-        'USER': 'admin',
-        'PASSWORD': 'RdnoR_7Tz2',
-        'HOST': 'localhost',
-        'PORT': '3306',
+            'options': '-c search_path=your_schema,public',
+        },
     }
 }
+
 
 
 # Password validation

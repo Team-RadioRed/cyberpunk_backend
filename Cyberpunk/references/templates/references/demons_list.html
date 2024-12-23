@@ -1,0 +1,14 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}Список демонов{% endblock %}
+
+{% block content %}
+    <h1>Список демонов</h1>
+    <ul>
+        {% for demon in demons %}
+            <li>
+                <a href="{% url 'references:demon-detail' demon.id %}">{{ demon.name_rus }} ({{ demon.name_eng }})</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

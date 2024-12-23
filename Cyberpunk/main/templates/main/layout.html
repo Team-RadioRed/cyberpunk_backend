@@ -15,21 +15,18 @@
         <br>
         <span class="logo">База данных по Cyberpunk RED</span>
         <h3>Навигация</h3>
-        <!-- <details class="details">
-            <summary class="details__title">Выпадающий список</summary>
-            <div class="details__content">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum omnis beatae itaque! Maxime consequuntur architecto, voluptatibus iste aliquid quaerat dolores, culpa repellendus optio omnis rem saepe quisquam incidunt, numquam molestias?</p>
-            </div>
-        </details> --!>
         <ul>
-            <a href="{% url 'home' %}"><li><i class="fa-solid fa-house"></i> Главная</li></a>
-            <a href="{% url 'implants' %}"><li><i class="fa-solid fa-microchip"></i> Импланты</li></a>
-            <a href=""><li><i class="fa-solid fa-gun"></i> Оружие</li></a>
+            <a href="{% url 'main:index' %}"><li><i class="fa-solid fa-house"></i> Главная</li></a>
+            <a href="{% url 'references:implants_list' %}"><li><i class="fa-solid fa-microchip"></i> Импланты</li></a>
+            <a href="{% url 'references:weapons_list' %}"><li><i class="fa-solid fa-gun"></i> Оружие</li></a>
+            <a href="{% url 'references:programs_list' %}"><li><i class="fa-solid fa-square-binary"></i> Оружие</li></a>
+            <a href="{% url 'references:demons_list' %}"><li><i class="fa-solid fa-bomb"></i> Оружие</li></a>
         </ul>
     </aside>
     <main>
         {% block content %}
         {% endblock %}
     </main>
+    <script src="{% static 'js/sidebar.js' %}"></script>
 </body>
 </html>

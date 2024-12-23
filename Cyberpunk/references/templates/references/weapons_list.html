@@ -1,0 +1,18 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}
+    Implants
+{% endblock %}
+
+{% block content %}
+    <h1>Список оружий</h1>
+    <ul>
+    {% for weapon in weapons %}
+        <li>
+            <a href="{% url 'references:weapon-detail' weapon.id %}">
+                {{ weapon.id }} - {{ weapon.name_rus }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}
