@@ -1,0 +1,37 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}
+    Implants
+{% endblock %}
+
+{% block content %}
+    <h1>{{ weapon.name_rus }} ({{ weapon.name_eng }})</h1>
+
+    <p><strong>Тип:</strong> {{ weapon.type.name }}</p>  <!-- предполагаем, что в ItemType есть поле name -->
+    <p><strong>Экзотическое:</strong> {% if weapon.is_exotic %}Да{% else %}Нет{% endif %}</p>
+    <p><strong>Необходимые навыки:</strong> {{ weapon.skill_need }}</p>
+    <p><strong>Урон:</strong> {{ weapon.damage }}</p>
+    <p><strong>Магазин:</strong> {{ weapon.magazine }}</p>
+    <p><strong>Темп стрельбы:</strong> {{ weapon.rate_of_fire }} выстрелов в минуту</p>
+    <p><strong>Тип захвата:</strong> {{ weapon.grab_type }}</p>
+
+    <h3>Цены:</h3>
+    <p><strong>Цена (низкая):</strong> {{ weapon.price_low }}</p>
+    <p><strong>Цена (средняя):</strong> {{ weapon.price_middle }}</p>
+    <p><strong>Цена (высокая):</strong> {{ weapon.price_high }}</p>
+
+    <h3>Описание:</h3>
+    <p>{{ weapon.description }}</p>
+
+    <h3>Уникальная особенность:</h3>
+    <p>{{ weapon.unical_feature }}</p>
+
+    <p><strong>Количество модификаций:</strong> {{ weapon.modifications_count }}</p>
+
+    <h3>Источник:</h3>
+    <p>{{ weapon.source.name }}</p>  <!-- предполагаем, что в Source есть поле name -->
+
+    <p><strong>Скрыто:</strong> {% if weapon.hidden %}Да{% else %}Нет{% endif %}</p>
+
+    <a href="{% url 'references:weapons-list' %}">Назад к списку</a>
+{% endblock %}
