@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from pymongo import MongoClient
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,20 +79,25 @@ WSGI_APPLICATION = 'Cyberpunk.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cyberpunk_db',  # Название вашей базы данных
-        'USER': 'postgres',     # Имя пользователя MySQL
-        'PASSWORD': 'RdnoR_7Tz2',   # Пароль пользователя MySQL
-        'HOST': 'localhost',           # Сервер базы данных (обычно localhost или же айпи сервера сюда вписать)
-        'PORT': '5432',                # Порт Postgres (по умолчанию 5432)
-        'OPTIONS': {
-            'options': '-c search_path=your_schema,public',
-        },
-    }
-}
+# Параметры подключения
+MONGO_DB_NAME = "cyberpunkdb"  # Название базы данных
+MONGO_HOST = "radiored.ru"  # Или IP-адрес MongoDB сервера
+MONGO_PORT = 27017  # Порт MongoDB (по умолчанию 27017)
+MONGO_USER = "red_readonly"  # Логин пользователя MongoDB
+MONGO_PASSWORD = "S1yG8vHGqgot0n7nw7"  # Пароль пользователя MongoDB
 
+# Подключение через строку URI
+# MONGO_URI = f"mongodb://red_readonly:S1yG8vHGqgot0n7nw7@radiored.ru:27017/cyberpunkdb" - пример использования
+MONGO_URI = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}"
+mongo_client = MongoClient(MONGO_URI)
+
+# Подключение к базе данных
+MONGO_DB = mongo_client[MONGO_DB_NAME]
+
+try:
+    MONGO_DB.list_collection_names()
+except Exception as e:
+    print(f"Error connecting to MongoDB: {e}")
 
 
 # Password validation
