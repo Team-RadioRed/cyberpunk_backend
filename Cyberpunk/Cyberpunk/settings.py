@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'main',
     'references',
+    'generators',
 
     'rest_framework'
 ]

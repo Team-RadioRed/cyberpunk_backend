@@ -107,3 +107,37 @@ main .features p {max-width: 400px; margin: 20px auto}
 .arrow-down {
     transform: rotate(90deg);
 }
+aside {
+    position: relative;
+    max-width: 300px;
+}
+.fa-database {
+    font-size: 6rem; /* Уменьшение размера иконки */
+}
+.dropdown-menu {
+    position: static; /* Делаем списки всегда видимыми при активации */
+    float: none;
+    background: rgba(255, 255, 255, 0.8); /* Прозрачный фон */
+    margin-bottom: 0.5rem; /* Уменьшенное пространство между списками */
+    display: none; /* Скрыто по умолчанию */
+}
+.dropdown.active > .dropdown-menu {
+    display: block; /* Отображение выпадающих меню при клике */
+}
+ul {
+    padding: 0;
+}
+ul > li {
+    margin-bottom: 0.5rem; /* Уменьшенное расстояние между кнопками */
+}
+.dropdown-item {
+    font-size: 0.9rem; /* Уменьшенный шрифт кнопок */
+    padding: 0.25rem 0.5rem; /* Уменьшенный внутренний отступ */
+}
+.logo {
+    display: block;
+    margin-top: 1rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+}

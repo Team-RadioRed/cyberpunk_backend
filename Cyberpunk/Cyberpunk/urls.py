@@ -24,5 +24,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls')),
     path('references/', include('references.urls', namespace='references')),
+    path('generators/', include('generators.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
