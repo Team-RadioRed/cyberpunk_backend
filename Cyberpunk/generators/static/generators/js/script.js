@@ -5,7 +5,7 @@ document.getElementById('networkForm').addEventListener('submit', async function
     const branching = document.getElementById('branching').checked;
 
     try {
-        const response = await fetch('/generate-network/', {
+        const response = await fetch('', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
