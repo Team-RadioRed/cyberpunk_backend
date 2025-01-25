@@ -4,11 +4,52 @@
 
 {% block content %}
 <h1>Список оружия</h1>
-<ul>
-    {% for weapon in weapons %}
-        <li>
-            <a href="{% url 'weapon_detail' weapon.id %}">{{ weapon.name }}</a> (ID: {{ weapon.id }})
-        </li>
-    {% endfor %}
-</ul>
+
+<form method="get">
+    <label for="sort_by">Сортировать по:</label>
+    <select id="sort_by" name="sort_by">
+        <option value="">Не сортировать</option>
+        <option value="name">Название</option>
+        <option value="rarity">Редкость</option>
+        <option value="type">Тип</option>
+        <option value="skill">Навык</option>
+        <option value="cost">Ценовая категория</option>
+        <option value="module">Источник</option>
+    </select>
+
+    <label for="sort_order">Порядок:</label>
+    <select id="sort_order" name="sort_order">
+        <option value="asc">По возрастанию</option>
+        <option value="desc">По убыванию</option>
+    </select>
+
+    <button type="submit">Применить</button>
+</form>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Редкость</th>
+            <th>Тип</th>
+            <th>Навык</th>
+            <th>Ценовая категория</th>
+            <th>Источник</th>
+            <th>Официальный</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for weapon in weapons %}
+        <tr>
+            <td>{{ weapon.name }}</td>
+            <td>{{ weapon.damage }}</td>
+            <td>{{ weapon.type }}</td>
+            <td>{{ weapon.skill }}</td>
+            <td>{{ weapon.cost }}</td>
+            <td>{{ weapon.module }}</td>
+            <td>{{ weapon.source }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
