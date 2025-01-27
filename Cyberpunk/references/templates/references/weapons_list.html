@@ -6,21 +6,62 @@
 <h1>Список оружия</h1>
 
 <form method="get">
-    <label for="sort_by">Сортировать по:</label>
-    <select id="sort_by" name="sort_by">
-        <option value="">Не сортировать</option>
-        <option value="name">Название</option>
-        <option value="rarity">Редкость</option>
-        <option value="type">Тип</option>
-        <option value="skill">Навык</option>
-        <option value="cost">Ценовая категория</option>
-        <option value="module">Источник</option>
+    <label for="rarity">Редкость:</label>
+    <select id="rarity" name="rarity">
+        <option value="Все">Все</option>
+        <option value="Экзотика">Экзотика</option>
+        <option value="Обычное">Обычное</option>
     </select>
 
-    <label for="sort_order">Порядок:</label>
-    <select id="sort_order" name="sort_order">
-        <option value="asc">По возрастанию</option>
-        <option value="desc">По убыванию</option>
+    <label for="weapon_type">Тип:</label>
+    <select id="weapon_type" name="weapon_type">
+        <option value="Все">Все</option>
+        <option value="ОДБ">ОДБ</option>
+        <option value="ОББ">ОББ</option>
+    </select>
+
+    <label for="skill">Навык:</label>
+    <select id="skill" name="skill">
+        <option value="">Все</option>
+        <option value="Автоматический Огонь">Автоматический Огонь</option>
+        <option value="Атлетика">Атлетика</option>
+        <option value="Оружие ближнего боя">Оружие ближнего боя</option>
+        <option value="Оружие крупного калибра">Оружие крупного калибра</option>
+        <option value="Пилотирование">Пилотирование</option>
+        <option value="Пистолеты">Пистолеты</option>
+        <option value="Стрельба из лука">Стрельба из лука</option>
+        <option value="Тактическое Оружие">Тактическое Оружие</option>
+    </select>
+
+    <label for="price_category">Ценовая категория:</label>
+    <select id="price_category" name="price_category">
+        <option value="">Все</option>
+        <option value="Дешево">Дешево</option>
+        <option value="Дорогое">Дорогое</option>
+        <option value="Обычное">Обычное</option>
+        <option value="Очень дорогое">Очень дорогое</option>
+        <option value="Повседневное">Повседневное</option>
+        <option value="Премиум">Премиум</option>
+        <option value="Роскошь">Роскошь</option>
+        <option value="Супер Роскошь">Супер Роскошь</option>
+        <option value="Ценное">Ценное</option>
+    </select>
+
+    <label for="source">Источник:</label>
+    <select id="source" name="source">
+        <option value="">Все</option>
+        <option value="Core">Core</option>
+        <option value="Black Chrome">Black Chrome</option>
+        <option value="Toggle's Temple">Toggle's Temple</option>
+        <option value="Woodchipper`s Garage">Woodchipper`s Garage</option>
+        <option value="12 Days of Gunmas">12 Days of Gunmas</option>
+    </select>
+
+    <label for="official">Официальный:</label>
+    <select id="official" name="official">
+        <option value="Все">Все</option>
+        <option value="Да">Да</option>
+        <option value="Нет">Нет</option>
     </select>
 
     <button type="submit">Применить</button>
@@ -42,12 +83,12 @@
         {% for weapon in weapons %}
         <tr>
             <td>{{ weapon.name }}</td>
-            <td>{{ weapon.damage }}</td>
-            <td>{{ weapon.type }}</td>
+            <td>{{ weapon.rarity }}</td>
+            <td>{{ weapon.weapon_type }}</td>
             <td>{{ weapon.skill }}</td>
-            <td>{{ weapon.cost }}</td>
-            <td>{{ weapon.module }}</td>
+            <td>{{ weapon.price_category }}</td>
             <td>{{ weapon.source }}</td>
+            <td>{{ weapon.official|yesno:"Да,Нет" }}</td>
         </tr>
         {% endfor %}
     </tbody>

@@ -17,8 +17,7 @@ def implants(request):
     return render(request, 'main/implants.html')
 
 def weapons_list(request):
-    weapons_collection = settings.MONGO_DB['weapon']  # Используем подключение из settings.py
-
+    """Список оружия с фильтрацией и сортировкой"""
     # Получение фильтров из строки запроса
     rarity = request.GET.get('rarity', '').strip()
     weapon_type = request.GET.get('weapon_type', '').strip()
@@ -26,14 +25,12 @@ def weapons_list(request):
     price_category = request.GET.get('price_category', '').strip()
     source = request.GET.get('source', '').strip()
     official = request.GET.get('official', '').strip()
-    sort_by = request.GET.get('sort_by', '').strip()  # Поле для сортировки
-    sort_order = request.GET.get('sort_order', 'asc').strip()  # Порядок сортировки ('asc' или 'desc')
 
     # Формирование запроса к базе
     query = {}
-    if rarity:
+    if rarity and rarity != "Все":
         query['rarity'] = rarity
-    if weapon_type:
+    if weapon_type and weapon_type != "Все":
         query['weapon_type'] = weapon_type
     if skill:
         query['skill'] = skill
@@ -44,17 +41,8 @@ def weapons_list(request):
     if official in ['Да', 'Нет']:
         query['official'] = official == 'Да'
 
-    # Установка сортировки
-    sort_criteria = []
-    if sort_by:
-        order = 1 if sort_order == 'asc' else -1  # asc -> по возрастанию, desc -> по убыванию
-        sort_criteria.append((sort_by, order))
-
     # Получение данных из MongoDB
-    if sort_criteria:
-        weapons = list(weapons_collection.find(query).sort(sort_criteria))
-    else:
-        weapons = list(weapons_collection.find(query))
+    weapons = list(weapons_collection.find(query))
 
     # Преобразование ObjectId в строку для шаблона
     for weapon in weapons:
