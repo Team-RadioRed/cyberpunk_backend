@@ -1,9 +1,7 @@
 from django.shortcuts import render
 from bson.objectid import ObjectId
 from django.http import Http404
-from django.conf import settings
-
-weapons_collection = settings.MONGO_DB["weapon"]
+from Cyberpunk.db import get_mongo_db
 
 def index(request):
     """Главная страница"""
@@ -18,6 +16,10 @@ def implants(request):
 
 def weapons_list(request):
     """Список оружия с фильтрацией и сортировкой"""
+
+    db = get_mongo_db()  # Подключаемся к базе
+    weapons_collection = db["weapon"]  #  Получаем коллекцию
+
     # Получение фильтров из строки запроса
     rarity = request.GET.get('rarity', '').strip()
     weapon_type = request.GET.get('weapon_type', '').strip()
@@ -50,15 +52,3 @@ def weapons_list(request):
 
     # Передача данных в шаблон
     return render(request, 'references/weapons_list.html', {'weapons': weapons})
-
-def weapon_detail(request, weapon_id):
-    """Отображение деталей оружия"""
-    collection = settings.MONGO_DB["weapons"]
-    try:
-        weapon = collection.find_one({"_id": ObjectId(weapon_id)})
-        if weapon is None:
-            raise Http404("Weapon not found")
-        weapon["_id"] = str(weapon["_id"])
-        return render(request, "references/weapon_detail.html", {"weapon": weapon})
-    except Exception:
-        raise Http404("Invalid ID")

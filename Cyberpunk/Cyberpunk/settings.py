@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from pymongo import MongoClient
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+&#3e+#g41_9a@2)-pqp#gou!uy2m4&6h+t3wl25a+%-ke&5%c'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -79,28 +80,20 @@ WSGI_APPLICATION = 'Cyberpunk.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# Параметры подключения
-MONGO_DB_NAME = "cyberpunkdb"  # Название базы данных
-MONGO_HOST = "radiored.ru"  # Или IP-адрес MongoDB сервера
-MONGO_PORT = 27017  # Порт MongoDB (по умолчанию 27017)
-MONGO_USER = "red_readonly"  # Логин пользователя MongoDB
-MONGO_PASSWORD = "S1yG8vHGqgot0n7nw7"  # Пароль пользователя MongoDB
-
+'''
 # Подключение через строку URI
-# MONGO_URI = f"mongodb://red_readonly:S1yG8vHGqgot0n7nw7@radiored.ru:27017/cyberpunkdb" - пример использования
-MONGO_URI = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/{MONGO_DB_NAME}"
+MONGO_URI = config('DATABASE_URI')
 mongo_client = MongoClient(MONGO_URI)
 
 # Подключение к базе данных
-MONGO_DB = mongo_client[MONGO_DB_NAME]
+MONGO_DB = mongo_client[config('DATABASE_NAME')]
 
 try:
     MONGO_DB.list_collection_names()
 except Exception as e:
     print(f"Error connecting to MongoDB: {e}")
 
-
+'''
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
