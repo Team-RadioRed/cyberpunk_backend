@@ -1,5 +1,4 @@
-from django.http import JsonResponse, Http404
-from bson.objectid import ObjectId
+from django.http import JsonResponse
 from Cyberpunk.db import get_mongo_db
 
 def index(request):
@@ -26,16 +25,16 @@ def weapons_list(request):
         query['skill'] = skill
     if (price_category := request.GET.get('price_category', '').strip()):
         query['price_category'] = price_category
-    if (source := request.GET.get('source', '').strip()):
-        query['source'] = source
+    if (sources := request.GET.getlist('source')):  
+        query['source'] = {'$in': sources}
     if (official := request.GET.get('official', '').strip()) in ['Да', 'Нет']:
         query['official'] = official == 'Да'
 
     # Получение данных из MongoDB
     weapons = list(weapons_collection.find(query))
+    weapons = [{**weapon, '_id': str(weapon['_id'])} for weapon in weapons]
 
-    # Преобразуем ObjectId в строку
-    for weapon in weapons:
-        weapon['_id'] = str(weapon['_id'])
+    if not weapons:
+        return JsonResponse({'message': 'Оружие не найдено', 'weapons': []})
 
-    return JsonResponse({'weapons': weapons}, safe=False)
+    return JsonResponse({'weapons': weapons})
