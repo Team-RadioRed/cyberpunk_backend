@@ -3,7 +3,3 @@
 .env
 # Игнорировать кэшированные файлы Python
 __pycache__/
-__pycache__/*
-*/__pycache__/
-Cyberpunk/references/__pycache__/*
-

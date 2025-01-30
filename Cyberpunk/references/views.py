@@ -1,54 +1,41 @@
-from django.shortcuts import render
+from django.http import JsonResponse, Http404
 from bson.objectid import ObjectId
-from django.http import Http404
 from Cyberpunk.db import get_mongo_db
 
 def index(request):
-    """Главная страница"""
-    data = {
-        'title': 'Главная страница',
-    }
-    return render(request, 'main/index.html', data)
+    """Главная страница API"""
+    return JsonResponse({'message': 'Добро пожаловать в API Cyberpunk RED'})
 
 def implants(request):
-    """Страница имплантов"""
-    return render(request, 'main/implants.html')
+    """Заглушка для страницы имплантов в API"""
+    return JsonResponse({'message': 'Раздел имплантов API в разработке'})
 
 def weapons_list(request):
-    """Список оружия с фильтрацией и сортировкой"""
+    """API: Список оружия с фильтрацией"""
 
     db = get_mongo_db()  # Подключаемся к базе
-    weapons_collection = db["weapon"]  #  Получаем коллекцию
+    weapons_collection = db["weapon"]
 
     # Получение фильтров из строки запроса
-    rarity = request.GET.get('rarity', '').strip()
-    weapon_type = request.GET.get('weapon_type', '').strip()
-    skill = request.GET.get('skill', '').strip()
-    price_category = request.GET.get('price_category', '').strip()
-    source = request.GET.get('source', '').strip()
-    official = request.GET.get('official', '').strip()
-
-    # Формирование запроса к базе
     query = {}
-    if rarity and rarity != "Все":
+    if (rarity := request.GET.get('rarity', '').strip()) and rarity != "Все":
         query['rarity'] = rarity
-    if weapon_type and weapon_type != "Все":
+    if (weapon_type := request.GET.get('weapon_type', '').strip()) and weapon_type != "Все":
         query['weapon_type'] = weapon_type
-    if skill:
+    if (skill := request.GET.get('skill', '').strip()):
         query['skill'] = skill
-    if price_category:
+    if (price_category := request.GET.get('price_category', '').strip()):
         query['price_category'] = price_category
-    if source:
+    if (source := request.GET.get('source', '').strip()):
         query['source'] = source
-    if official in ['Да', 'Нет']:
+    if (official := request.GET.get('official', '').strip()) in ['Да', 'Нет']:
         query['official'] = official == 'Да'
 
     # Получение данных из MongoDB
     weapons = list(weapons_collection.find(query))
 
-    # Преобразование ObjectId в строку для шаблона
+    # Преобразуем ObjectId в строку
     for weapon in weapons:
         weapon['_id'] = str(weapon['_id'])
 
-    # Передача данных в шаблон
-    return render(request, 'references/weapons_list.html', {'weapons': weapons})
+    return JsonResponse({'weapons': weapons}, safe=False)

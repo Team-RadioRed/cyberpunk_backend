@@ -77,23 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Cyberpunk.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-'''
-# Подключение через строку URI
-MONGO_URI = config('DATABASE_URI')
-mongo_client = MongoClient(MONGO_URI)
-
-# Подключение к базе данных
-MONGO_DB = mongo_client[config('DATABASE_NAME')]
-
-try:
-    MONGO_DB.list_collection_names()
-except Exception as e:
-    print(f"Error connecting to MongoDB: {e}")
-
-'''
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -111,7 +94,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
