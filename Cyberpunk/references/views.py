@@ -1,56 +1,40 @@
-from django.shortcuts import render
-from rest_framework import generics
-from .models import Weapon, Implant, Program, Demon
-# from .serializers import WeaponListSerializer, WeaponDetailSerializer, ImplantListSerializer, ImplantDetailSerializer, ProgramListSerializer, ProgramDetailSerializer, DemonListSerializer, DemonDetailSerializer
+from django.http import JsonResponse
+from Cyberpunk.db import get_mongo_db
 
 def index(request):
-    data = {
-        'title': 'Главная страница',
-
-    }
-    return render(request, 'main/index.html', data)
-
+    """Главная страница API"""
+    return JsonResponse({'message': 'Добро пожаловать в API Cyberpunk RED'})
 
 def implants(request):
-    return render(request, 'main/implants.html')
-
-'''
-def weapons(request):
-    return render(request, 'references/weapons.html')'''
+    """Заглушка для страницы имплантов в API"""
+    return JsonResponse({'message': 'Раздел имплантов API в разработке'})
 
 def weapons_list(request):
-    weapons = Weapon.objects.all()
-    return render(request, 'references/weapons_list.html', {'weapons': weapons})
+    """API: Список оружия с фильтрацией"""
 
-def weapon_detail(request, id):
-    weapon = Weapon.objects.get(id=id)
-    return render(request, 'references/weapon_detail.html', {'weapon': weapon})
+    db = get_mongo_db()  # Подключаемся к базе
+    weapons_collection = db["weapon"]
 
-def implants_list(request):
-    implants = Implant.objects.all()
-    return render(request, 'references/implants_list.html', {'implants': implants})
+    # Получение фильтров из строки запроса
+    query = {}
+    if (rarity := request.GET.get('rarity', '').strip()) and rarity != "Все":
+        query['rarity'] = rarity
+    if (weapon_type := request.GET.get('weapon_type', '').strip()) and weapon_type != "Все":
+        query['weapon_type'] = weapon_type
+    if (skill := request.GET.get('skill', '').strip()):
+        query['skill'] = skill
+    if (price_category := request.GET.get('price_category', '').strip()):
+        query['price_category'] = price_category
+    if (sources := request.GET.getlist('source')):  
+        query['source'] = {'$in': sources}
+    if (official := request.GET.get('official', '').strip()) in ['Да', 'Нет']:
+        query['official'] = official == 'Да'
 
-# Страница импланта (подробности одного импланта)
-def implant_detail(request, id):
-    implant = Implant.objects.get(id=id)
-    return render(request, 'references/implant_detail.html', {'implant': implant})
+    # Получение данных из MongoDB
+    weapons = list(weapons_collection.find(query))
+    weapons = [{**weapon, '_id': str(weapon['_id'])} for weapon in weapons]
 
-# Страница программ (список всех программ)
-def programs_list(request):
-    programs = Program.objects.all()
-    return render(request, 'references/programs_list.html', {'programs': programs})
+    if not weapons:
+        return JsonResponse({'message': 'Оружие не найдено', 'weapons': []})
 
-# Страница программы (подробности одной программы)
-def program_detail(request, id):
-    program = Program.objects.get(id=id)
-    return render(request, 'references/program_detail.html', {'program': program})
-
-# Страница демонов (список всех демонов)
-def demons_list(request):
-    demons = Demon.objects.all()
-    return render(request, 'references/demons_list.html', {'demons': demons})
-
-# Страница демона (подробности одного демона)
-def demon_detail(request, id):
-    demon = Demon.objects.get(id=id)
-    return render(request, 'references/demon_detail.html', {'demon': demon})
+    return JsonResponse({'weapons': weapons})

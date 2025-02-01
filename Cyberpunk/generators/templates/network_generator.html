@@ -1,0 +1,60 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block title %} Генератор Сети {% endblock %}
+
+{% block style %}
+<style>
+    h1 {
+        text-align: center;
+    }
+
+    form {
+        margin: 20px 0;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="number"], input[type="checkbox"] {
+        margin-bottom: 15px;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <h1>Генератор Сети</h1>
+    <form id="networkForm">
+        <label for="difficulty">Сложность сети (от 6 до 18):</label>
+        <input type="number" id="difficulty" name="difficulty" min="6" max="18" required>
+        <label for="branching">Включить ветвления?</label>
+        <input type="checkbox" id="branching" name="branching">
+        <br>
+        <button type="submit">Сгенерировать</button>
+    </form>
+
+    <h2>Результат:</h2>
+    <pre id="result"></pre>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'generators/js/script.js' %}"></script>
+<script>
+    // Ваши дополнительные скрипты для страницы генератора
+</script>
+{% endblock %}
