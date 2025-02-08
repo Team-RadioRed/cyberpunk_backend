@@ -3,11 +3,13 @@ import django
 from pymongo import MongoClient
 from decouple import config
 
-# Устанавливаем Django окружение
+'''
+# Устанавливаем Django окружение(убрать большой комментарий если не работает)
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Cyberpunk.settings")
 django.setup()
+'''
 
 def check_remote_mongo_connection():
     """Проверяет соединение с удалённой MongoDB."""
@@ -28,6 +30,6 @@ def check_remote_mongo_connection():
     except Exception as e:
         print(f"❌ Ошибка подключения к MongoDB: {e}")
 
-# Запуск проверки
+# Запуск проверки (код запускается только если вызвать его напрямую)
 if __name__ == "__main__":
     check_remote_mongo_connection()

@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-from pymongo import MongoClient
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

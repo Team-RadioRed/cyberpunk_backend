@@ -10,31 +10,52 @@ def implants(request):
     return JsonResponse({'message': 'Раздел имплантов API в разработке'})
 
 def weapons_list(request):
-    """API: Список оружия с фильтрацией"""
+    """API: Список оружия"""
 
     db = get_mongo_db()  # Подключаемся к базе
     weapons_collection = db["weapon"]
 
-    # Получение фильтров из строки запроса
-    query = {}
-    if (rarity := request.GET.get('rarity', '').strip()) and rarity != "Все":
-        query['rarity'] = rarity
-    if (weapon_type := request.GET.get('weapon_type', '').strip()) and weapon_type != "Все":
-        query['weapon_type'] = weapon_type
-    if (skill := request.GET.get('skill', '').strip()):
-        query['skill'] = skill
-    if (price_category := request.GET.get('price_category', '').strip()):
-        query['price_category'] = price_category
-    if (sources := request.GET.getlist('source')):  
-        query['source'] = {'$in': sources}
-    if (official := request.GET.get('official', '').strip()) in ['Да', 'Нет']:
-        query['official'] = official == 'Да'
-
     # Получение данных из MongoDB
-    weapons = list(weapons_collection.find(query))
-    weapons = [{**weapon, '_id': str(weapon['_id'])} for weapon in weapons]
+    weapons_cursor = weapons_collection.find({})
 
+    # Преобразуем курсор в список и удаляем поле _id
+    weapons = []
+    for weapon in weapons_cursor:
+        weapon.pop('_id', None)  # Удаляем _id, если он есть
+        weapons.append(weapon)
+
+    # Проверяем, есть ли данные
     if not weapons:
         return JsonResponse({'message': 'Оружие не найдено', 'weapons': []})
 
+    # Возвращаем данные в формате JSON
     return JsonResponse({'weapons': weapons})
+
+
+def programs_list(request):
+    """API: Список всех программ из коллекции program"""
+
+    # Подключаемся к базе данных
+    db = get_mongo_db()
+    
+    # Выбираем коллекцию program
+    programs_collection = db["program"]
+
+    # Получаем все документы из коллекции
+    programs_cursor = programs_collection.find({})
+    
+    # Преобразуем курсор в список
+    programs_list = list(programs_cursor)
+
+    # Убираем поле _id из каждого документа
+    programs_without_id = []
+    for program in programs_list:
+        program.pop('_id', None)  # Удаляем _id, если он есть
+        programs_without_id.append(program)
+
+    # Проверяем, есть ли данные
+    if not programs_without_id:
+        return JsonResponse({'message': 'Программы не найдены', 'programs': []})
+
+    # Возвращаем данные в формате JSON
+    return JsonResponse({'programs': programs_without_id})
