@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+&#3e+#g41_9a@2)-pqp#gou!uy2m4&6h+t3wl25a+%-ke&5%c'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
 
     'main',
     'references',
+    'generators',
 
     'rest_framework'
 ]
@@ -74,26 +76,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Cyberpunk.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cyberpunk_db',  # Название вашей базы данных
-        'USER': 'postgres',     # Имя пользователя MySQL
-        'PASSWORD': 'RdnoR_7Tz2',   # Пароль пользователя MySQL
-        'HOST': 'localhost',           # Сервер базы данных (обычно localhost или же айпи сервера сюда вписать)
-        'PORT': '5432',                # Порт Postgres (по умолчанию 5432)
-        'OPTIONS': {
-            'options': '-c search_path=your_schema,public',
-        },
-    }
-}
-
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -111,7 +93,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

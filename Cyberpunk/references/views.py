@@ -1,56 +1,31 @@
-from django.shortcuts import render
-from rest_framework import generics
-from .models import Weapon, Implant, Program, Demon
-# from .serializers import WeaponListSerializer, WeaponDetailSerializer, ImplantListSerializer, ImplantDetailSerializer, ProgramListSerializer, ProgramDetailSerializer, DemonListSerializer, DemonDetailSerializer
+from django.http import JsonResponse
+from Cyberpunk.db import get_mongo_db
 
 def index(request):
-    data = {
-        'title': 'Главная страница',
+    """Главная страница API"""
+    return JsonResponse({'message': 'Добро пожаловать в API Cyberpunk RED'})
 
-    }
-    return render(request, 'main/index.html', data)
+def get_collection_data(collection_name, empty_message, response_key):
+    """Функция для получения данных из MongoDB коллекции"""
+    db = get_mongo_db()  
+    collection = db[collection_name]  
+    cursor = collection.find({}, {"_id": 0})  # Исключаем _id в запросе
 
+    # Если данных нет, возвращаем сообщение
+    data = list(cursor)
+    if not data:
+        return JsonResponse({'message': empty_message, response_key: []})
 
-def implants(request):
-    return render(request, 'main/implants.html')
-
-'''
-def weapons(request):
-    return render(request, 'references/weapons.html')'''
+    return JsonResponse({response_key: data})
 
 def weapons_list(request):
-    weapons = Weapon.objects.all()
-    return render(request, 'references/weapons_list.html', {'weapons': weapons})
+    """API: Список оружия"""
+    return get_collection_data("weapon", "Оружие не найдено", "weapons")
 
-def weapon_detail(request, id):
-    weapon = Weapon.objects.get(id=id)
-    return render(request, 'references/weapon_detail.html', {'weapon': weapon})
-
-def implants_list(request):
-    implants = Implant.objects.all()
-    return render(request, 'references/implants_list.html', {'implants': implants})
-
-# Страница импланта (подробности одного импланта)
-def implant_detail(request, id):
-    implant = Implant.objects.get(id=id)
-    return render(request, 'references/implant_detail.html', {'implant': implant})
-
-# Страница программ (список всех программ)
 def programs_list(request):
-    programs = Program.objects.all()
-    return render(request, 'references/programs_list.html', {'programs': programs})
+    """API: Список всех программ из коллекции program"""
+    return get_collection_data("program", "Программы не найдены", "programs")
 
-# Страница программы (подробности одной программы)
-def program_detail(request, id):
-    program = Program.objects.get(id=id)
-    return render(request, 'references/program_detail.html', {'program': program})
-
-# Страница демонов (список всех демонов)
-def demons_list(request):
-    demons = Demon.objects.all()
-    return render(request, 'references/demons_list.html', {'demons': demons})
-
-# Страница демона (подробности одного демона)
-def demon_detail(request, id):
-    demon = Demon.objects.get(id=id)
-    return render(request, 'references/demon_detail.html', {'demon': demon})
+def cyberware_list(request):
+    """API: Список всех имплантов из коллекции cyberware"""
+    return get_collection_data("cyberware", "Импланты не найдены", "cyberware")
