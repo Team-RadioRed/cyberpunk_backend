@@ -5,7 +5,7 @@ def index(request):
     """Главная страница API"""
     return JsonResponse({'message': 'Добро пожаловать в API Cyberpunk RED'})
 
-def get_collection_data(collection_name, empty_message, response_key):
+def get_collection_data(collection_name, empty_message):
     """Функция для получения данных из MongoDB коллекции"""
     db = get_mongo_db()  
     collection = db[collection_name]  
@@ -14,18 +14,26 @@ def get_collection_data(collection_name, empty_message, response_key):
     # Если данных нет, возвращаем сообщение
     data = list(cursor)
     if not data:
-        return JsonResponse({'message': empty_message, response_key: []})
+        return JsonResponse({'message': empty_message, collection_name: []})
 
-    return JsonResponse({response_key: data})
+    return JsonResponse({collection_name: data})
 
 def weapons_list(request):
     """API: Список оружия"""
-    return get_collection_data("weapon", "Оружие не найдено", "weapons")
+    return get_collection_data("weapon", "Оружие не найдено")
 
 def programs_list(request):
-    """API: Список всех программ из коллекции program"""
-    return get_collection_data("program", "Программы не найдены", "programs")
+    """API: Список программ"""
+    return get_collection_data("program", "Программы не найдены")
 
 def cyberware_list(request):
-    """API: Список всех имплантов из коллекции cyberware"""
-    return get_collection_data("cyberware", "Импланты не найдены", "cyberware")
+    """API: Список имплантов"""
+    return get_collection_data("cyberware", "Импланты не найдены")
+
+def transport_list(request):
+    """API: Список имплантов"""
+    return get_collection_data("transport", "Транспорт не найден")
+
+def roles_list(request):
+    """API: Список имплантов"""
+    return get_collection_data("role", "Роли не найдены")
