@@ -1,11 +1,11 @@
 import random
 import json
+from Cyberpunk.db import get_mongo_db
 from django.http import JsonResponse
+from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
-from django.views import View
-from Cyberpunk.db import get_mongo_db
 
 class NetworkGenerator(View):
     @method_decorator(csrf_exempt)
