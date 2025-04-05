@@ -4,7 +4,7 @@ from decouple import config
 
 def get_mongo_db():
     client = MongoClient(config('DATABASE_URI'))
-    db = client[config('DATABASE_NAME')]  # <- Указываем базу данных здесь
+    db = client[config('DATABASE_NAME')] 
 
     # Проверка подключения
     try:

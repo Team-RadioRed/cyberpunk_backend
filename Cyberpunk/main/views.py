@@ -2,13 +2,14 @@ from django.http import JsonResponse
 from Cyberpunk.db import get_mongo_db
 from pymongo import ASCENDING
 from fuzzysearch import find_near_matches
-from django.http import JsonResponse
 
 # Заглушка для главной страницы
 def main_page(request):
-    db = get_mongo_db()
-    
-    collections = db.list_collection_names()
+    try:
+        db = get_mongo_db()
+        collections = db.list_collection_names()
+    except Exception as e:
+        return JsonResponse({"message": "Ошибка подключения к базе", "details": str(e)}, status=500)
     
     news_collection = db['news']
     news = news_collection.find().sort('date', -1).limit(5)  # Сортируем по дате, ограничиваем 5 последними новостями
@@ -56,14 +57,14 @@ def global_search(request):
 
     query = request.GET.get("q", "").strip()
     lookfor_collection = request.GET.get("collection", "global")
-    if not query:
-        return JsonResponse({"message": "Введите запрос", "results": []})
+    if not query or len(query) < 2:
+        return JsonResponse({"message": "Некорректный запрос", "results": []}, status=400)
 
     db = get_mongo_db()
     collections = db.list_collection_names()  # коллекции, по которым будет вестись поиск
 
     if lookfor_collection not in collections and lookfor_collection != "global":
-        return JsonResponse({"message": "Некорректное название коллекции", "results": []})
+        return JsonResponse({"message": "Некорректное название коллекции", "results": []}, status=404)
 
     search_filter = {
         "$or": [

@@ -14,7 +14,7 @@ def get_collection_data(collection_name, empty_message):
     # Если данных нет, возвращаем сообщение
     data = list(cursor)
     if not data:
-        return JsonResponse({'message': empty_message, collection_name: []})
+        return JsonResponse({'message': empty_message, collection_name: []}, status=400)
 
     return JsonResponse({collection_name: data})
 
